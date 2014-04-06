@@ -141,4 +141,5 @@ def index():
     return open('index.html').read()
 
 
-run(host='0.0.0.0', port=8888, debug=True, reloader=True, autojson=True)
+run(host='0.0.0.0', port=80, debug=True, reloader=True, server='paste')
+#run(host='0.0.0.0', port=80, debug=True, reloader=True, autojson=True, server='paste')
