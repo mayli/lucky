@@ -13,8 +13,10 @@
     <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
     <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-    <script  type="text/javascript" src="src/js/jquery.cookie.js"></script>
+
     <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="src/js/jquery.cookie.js"></script>
+
     <script type="text/javascript" src="src/js/main.js"></script>
 
 
@@ -32,7 +34,7 @@
     </script>
 
     <script type="text/javascript" src="src/js/paper.js"></script>
-    <script type="text/paperscript" canvas="canvas">
+    <script type="text/paperscript"  canvas="canvas">
 		// Code ported to Paper.js from http://the389.com/9/1/
 		// with permission.
 
@@ -152,6 +154,7 @@
 
 
 
+
     </script>
 </head>
 <body onload="initialize()">
@@ -160,6 +163,9 @@
     <img src="src/img/lucky.png"/>
 </header>
 
+<div style="z-index:2; text-align: right; position: absolute; bottom: 10px" onclick="resetCookie()">
+    reset address
+</div>
 
 <div id="profile" class="row ">
 
@@ -173,17 +179,15 @@
 
     <div class=" col-md-4 col-md-offset-4">
 
-            <div class="form-group">
-                <input id="keyword" class="form-control" type="text" placeholder=" Enter anything ">
-            </div>
+        <div class="form-group">
+            <input id="keyword" class="form-control" type="text" placeholder="Enter anything ">
+        </div>
 
 
-            <div id="locationField">
-                <input id="autocomplete" class="form-control" placeholder="    Enter your address"
-                       onFocus="geolocate()" type="text">
-            </div>
-
-
+        <div id="locationField" class="form-group">
+            <input id="autocomplete" class="form-control" placeholder="Enter your address"
+                   onFocus="geolocate()" type="text">
+        </div>
 
 
     </div>
@@ -197,7 +201,7 @@
         </div>
     </div>
 
-    <div class="col-md-12" style="height:50px">
+    <div class="col-md-12" style="height:50px; z-index:1">
         <canvas id="canvas" resize hidpi="off"></canvas>
     </div>
 
@@ -228,7 +232,8 @@
                 <a class="btn-lg btn-default btn-warning" onclick="getSearch()">I feel more <b>Lucky</b>!</a>
             </div>
             <div class="col-md-2">
-                <a class="btn-lg btn-default btn-success">Awesome!</a>
+                <a class="btn-lg btn-default btn-success" data-toggle="modal"
+                   data-target="#modalCluster" onclick="getAddress()">Awesome!</a>
             </div>
         </div>
     </div>
@@ -237,7 +242,6 @@
 
 
 </div>
-
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -259,6 +263,44 @@
       </div>
     </div>
 </div>
+
+
+<div class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" id="modalCluster">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Order Confirmation</h4>
+            </div>
+
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="nameInput">Name</label>
+                        <input type="text" class="form-control" id="nameInput" placeholder="First Name, Last Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneInput">Phone</label>
+                        <input type="text" class="form-control" id="phoneInput" placeholder="(xxx)-xxx-xxxx">
+                    </div>
+                    <div class="form-group">
+                        <label for="addrInput">Address</label>
+                        <textarea class="form-control" id="addrInput" rows="4">123</textarea>
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="addCard('cluster')">Place Order
+                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+</div>
+
+
 
 </body>
 </html>
