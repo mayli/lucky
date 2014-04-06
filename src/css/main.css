@@ -81,11 +81,11 @@ div .table {
 
 }
 
-.address h3{
+.address h3, .status h3{
     line-height: 40px;
+    color: blue;
 }
-.address {
-
+.address, .status {
     margin-bottom: 20px;
     width: 100%;
 }

@@ -4,6 +4,19 @@
 
 
 
+var cacheOrderData = {
+    rid: null,
+    first_name: null,
+    last_name: null,
+    phone: null,
+    em: null,
+    tray: null,
+    tip: null,
+    zip: null,
+    addr: null,
+    city: null,
+    state: null
+}
 
 $(document).ready(function () {
     if (hasCookie()) {
@@ -60,6 +73,14 @@ function getResult() {
     })
         .done(function (data) {
             //alert("Data Saved: " + data);
+
+            cacheOrderData.rid = data.restaurant.id;
+            cacheOrderData.tray = data.trays;
+            cacheOrderData.zip = $.cookie("zip");
+            cacheOrderData.addr = $.cookie("address");
+            cacheOrderData.city = $.cookie("city");
+            cacheOrderData.state = $.cookie("state");
+            cacheOrderData.tip = "2.00" ;
 
             var items = [];
             var address = "";
@@ -212,4 +233,60 @@ function resetCookie(){
 
     $("#autocomplete").attr("placeholder","Enter your address");
 
+}
+
+function plzwaitoff2() {
+    $('#modalCluster').modal('hide');
+}
+
+function plzwaiton2() {
+    $('#modalCluster').modal('hide');
+}
+
+
+
+function placeOrder() {
+
+    plzwaiton2();
+
+    var name = $("#nameInput").val();
+    var phone = $("#phoneInput").val();
+    var email = $("#emailInput").val();
+    var addr = getCookieAddr();
+
+
+    cacheOrderData.first_name= name;
+    cacheOrderData.last_name= name;
+    cacheOrderData.em= email;
+    cacheOrderData.phone= phone;
+
+    $.ajax({
+        type: "POST",
+        url: "/post_order",
+        data: cacheOrderData
+    })
+        .done(function (data) {
+
+            var status = "Congratulations! Feel the power of random!";
+		 plzwaitoff2();
+            $("<h3 />", {
+                html: status
+            }).appendTo($(".status"));
+
+
+            cacheOrderData = {
+                rid: null,
+                first_name: null,
+                last_name: null,
+                phone: null,
+                em: null,
+                tray: null,
+                tip: null,
+                zip: null,
+                addr: null,
+                city: null,
+                state: null
+            }
+
+        });
 }

@@ -211,6 +211,11 @@
 <div id="result" style="display: none">
 
     <div class="row ">
+       <div class="col-md-12">
+            <div class="status col-md-6 col-md-offset-3"></div>
+        </div>
+
+
         <div class="col-md-12">
             <div class="table col-md-6 col-md-offset-3"></div>
         </div>
@@ -284,15 +289,19 @@
                         <input type="text" class="form-control" id="phoneInput" placeholder="(xxx)-xxx-xxxx">
                     </div>
                     <div class="form-group">
+                        <label for="emailInput">Email</label>
+                        <input type="email" class="form-control" id="emailInput" placeholder="123@abc.com">
+                    </div>
+
+                    <div class="form-group">
                         <label for="addrInput">Address</label>
-                        <textarea class="form-control" id="addrInput" rows="4">123</textarea>
+                        <textarea class="form-control" readonly="readonly" id="addrInput" rows="4">123</textarea>
                     </div>
                 </form>
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Place Order
-                </button>
+         	<a  class="btn btn-primary" onclick=" placeOrder()">Place Order    </a>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
