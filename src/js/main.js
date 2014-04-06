@@ -7,7 +7,7 @@
 
 $(document).ready(function () {
     if (hasCookie()) {
-        $("#locationField").hide();
+        $("#autocomplete").attr("placeholder", getCookieAddr());
     }
 
 });
@@ -23,7 +23,7 @@ function getSearch() {
 
 }
 
-function hasCookie(){
+function hasCookie() {
     return typeof ($.cookie('zip')) != 'undefined';
 }
 
@@ -32,21 +32,20 @@ function getResult() {
 
     //TODO
 
-if(!hasCookie()){
-    alert("We don't provide for NULL address user.");
-}
+    if (!hasCookie()) {
+        alert("We don't provide for NULL address user.");
+    }
 
     $("#search").hide();
     $("#result").show();
     $("#profile").hide();
 
 
-
     var userData = {
-        keyword:   document.getElementsById("keyword"),
-        addr: $.cookie.get('address')+","+$.cookie.get('city'),
-        city: $.cookie.get('state'),
-        zip: $.cookie.get('zip')
+        keyword: document.getElementById("keyword").textContent,
+        addr: $.cookie('address') + " " + $.cookie('city'),
+        city: $.cookie('state'),
+        zip: $.cookie('zip')
 
     }
 
@@ -58,63 +57,60 @@ if(!hasCookie()){
         .done(function (msg) {
             alert("Data Saved: " + msg);
 
-                var items = [];
-                var address = "";
-                var amount = data.amount;
+            var items = [];
+            var address = "";
+            var amount = data.amount;
 
-                address += data.restaurant.na + "<br>";
-                address += data.restaurant.addr + "<br>";
-                address += data.restaurant.cs_phone;
-
-
-                data = data.order;
-                items.push("<tr> <th   style='width:80%; ' > Top Secret </th><th  style='width:20%'> $ </th></tr>");
-
-                $(data).each(function () {
-                        var name = this.name;
-                        var price = this.price;
-                        items.push("<tr > <td class='blurry-text' style='width:80%'>" + name + " </td><td style='width:20%'> " + price + " x 1 " + "</td></tr>");
-                    }
-                );
-
-                items.push("<tr> <th  style='width:80%'> Bottom Secret </th><th  style='width:20%'> " + amount + " </th></tr>");
+            address += data.restaurant.na + "<br>";
+            address += data.restaurant.addr + "<br>";
+            address += data.restaurant.cs_phone;
 
 
-                $("<table  />", {
-                    "width": "100%",
-                    "class": "my-new-list table table-hover  table-striped  table-bordered",
-                    html: items.join("")
-                }).appendTo(".table");
+            data = data.order;
+            items.push("<tr> <th   style='width:80%; ' > Top Secret </th><th  style='width:20%'> $ </th></tr>");
+
+            $(data).each(function () {
+                    var name = this.name;
+                    var price = this.price;
+                    items.push("<tr > <td class='blurry-text' style='width:80%'>" + name + " </td><td style='width:20%'> " + price + " x 1 " + "</td></tr>");
+                }
+            );
+
+            items.push("<tr> <th  style='width:80%'> Bottom Secret </th><th  style='width:20%'> " + amount + " </th></tr>");
 
 
-                $("<h3 />", {
-                    html: address
-                }).appendTo($("#address"));
+            $("<table  />", {
+                "width": "100%",
+                "class": "my-new-list table table-hover  table-striped  table-bordered",
+                html: items.join("")
+            }).appendTo(".table");
 
-                var txt = $(".blurry-text");
-                txt.hover(function () {
 
-                    var result = $(this).css('text-shadow').split(" ");
+            $("<h3 />", {
+                html: address
+            }).appendTo($("#address"));
 
-                    var y = result[3];
-                    var x = result[4];
-                    var blur = result[5];
-                    var color = result[0] + result[1] + " " + result[2];
-                    // result => ['rgb(30, 43, 2)', '-4px', '11px', '8px']
-                    //console.log("[color]" + color + ",[y]" + y + ",[x]" + x + ",[blur]" + blur);
-                    blur = blur.replace("px", "");
-                    if (blur > 0) {
-                        blur = blur / 1.5 + "px";
-                        //console.log(blur);
-                        $(this).css('text-shadow', color + " " + y + " " + x + " " + blur);
-                    }
-                });
+            var txt = $(".blurry-text");
+            txt.hover(function () {
 
+                var result = $(this).css('text-shadow').split(" ");
+
+                var y = result[3];
+                var x = result[4];
+                var blur = result[5];
+                var color = result[0] + result[1] + " " + result[2];
+                // result => ['rgb(30, 43, 2)', '-4px', '11px', '8px']
+                //console.log("[color]" + color + ",[y]" + y + ",[x]" + x + ",[blur]" + blur);
+                blur = blur.replace("px", "");
+                if (blur > 0) {
+                    blur = blur / 1.5 + "px";
+                    //console.log(blur);
+                    $(this).css('text-shadow', color + " " + y + " " + x + " " + blur);
+                }
             });
 
-    /*    $.getJSON("data/item.json", function (data) {
+        });
 
-     });*/
 
 }
 
@@ -169,7 +165,7 @@ function fillInAddress() {
         }
     }
 
-    $.cookie('address', componentForm['street_number'] + "," + componentForm['route']);
+    $.cookie('address', (componentForm['street_number'] != "undefined" ? componentForm['street_number'] + "," : "") + componentForm['route']);
     $.cookie('city', componentForm['locality']);
     $.cookie('zip', componentForm['postal_code']);
     $.cookie('state', componentForm['administrative_area_level_1']);
@@ -191,3 +187,26 @@ function geolocate() {
     }
 }
 // [END region_geolocation]
+
+
+function getAddress() {
+    var addr = $.cookie('address') + "\n" + $.cookie('city') + "\n" + $.cookie('state') + "\n" + $.cookie('zip');
+    document.getElementById("addrInput").value = addr;
+}
+
+
+function getCookieAddr() {
+    var addr = $.cookie('address') + " " + $.cookie('city') + " " + $.cookie('state') + " " + $.cookie('zip');
+    alert(addr);
+    return  addr;
+}
+
+function resetCookie(){
+    $.removeCookie('address');
+    $.removeCookie('city');
+    $.removeCookie('zip');
+    $.removeCookie('state');
+
+    $("#autocomplete").attr("placeholder","Enter your address");
+
+}
