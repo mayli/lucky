@@ -61,19 +61,13 @@ function getResult() {
         .done(function (data) {
             //alert("Data Saved: " + data);
 
-                var items = [];
-                var address = "";
-                var amount = data.amount;
+            var items = [];
+            var address = "";
+            var amount = data.amount;
 
-                address += data.restaurant.na + "<i>($"+ data.restaurant.services.deliver.mino +" to delivery)</i>" + "<br>";
-                address += data.restaurant.addr + "<br>";
-                address += data.restaurant.cs_phone;
-
-
-            address += data.restaurant.na + "<br>";
+            address += data.restaurant.na + "<i>($"+ data.restaurant.services.deliver.mino +" to delivery)</i>" + "<br>";
             address += data.restaurant.addr + "<br>";
             address += data.restaurant.cs_phone;
-
 
             data = data.order;
             items.push("<tr> <th   style='width:80%; ' > Top Secret </th><th  style='width:20%'> $ </th></tr>");
@@ -117,9 +111,8 @@ function getResult() {
                     //console.log(blur);
                     $(this).css('text-shadow', color + " " + y + " " + x + " " + blur);
                 }
-plzwaitoff();
             });
-
+	plzwaitoff();
         });
 
 
@@ -207,7 +200,7 @@ function getAddress() {
 
 function getCookieAddr() {
     var addr = $.cookie('address') + " " + $.cookie('city') + " " + $.cookie('state') + " " + $.cookie('zip');
-    alert(addr);
+    //alert(addr);
     return  addr;
 }
 
