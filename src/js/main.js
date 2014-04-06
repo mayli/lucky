@@ -169,11 +169,11 @@ function fillInAddress() {
         }
     }
 
-    $.cookie('address', (componentForm['street_number'] != "undefined" ? componentForm['street_number'] + "," : "") + componentForm['route']);
-    $.cookie('city', componentForm['locality']);
-    $.cookie('zip', componentForm['postal_code']);
-    $.cookie('state', componentForm['administrative_area_level_1']);
-
+     $.cookie('address', (componentForm['street_number'] != "undefined" && componentForm['street_number'] != "short_name" ? componentForm['street_number'] + "," : "") + (componentForm['route'] != "long_name" ? componentForm['route'] : "")); 
++    $.cookie('city', componentForm['locality'] != "long_name" ? componentForm['locality'] : ""); 
++    $.cookie('zip', componentForm['postal_code'] != 'short_name' ? componentForm['postal_code'] : ""); 
++    $.cookie('state', componentForm['administrative_area_level_1']!="short_name"?componentForm['administrative_area_level_1']:""); 
+   
 }
 // [END region_fillform]
 

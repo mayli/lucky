@@ -133,3 +133,11 @@ div .table {
     height: 20px;
     margin-bottom: 2px;
 }
+.reset { 
+    z-index: 3; 
+    text-align: right; 
+    position: absolute; 
+    bottom: 15px; 
+    color: #ffffff; 
+    margin-left: 100px; 
+}
