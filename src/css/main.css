@@ -1,0 +1,135 @@
+body {
+    background-color: #ffffff;
+    margin: 0;
+    /*  overflow: hidden;*/
+    font-family: Exo;
+}
+
+.header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    font-family: Verdana;
+    font-size: 60px;
+    align-content: center;
+    text-align: center;
+    background-color: aliceblue;
+    color: #2a6496;
+    height: 100px;
+    margin-bottom: 40px;
+}
+
+img {
+    margin-left: 40px;
+    height: 250px;
+
+
+}
+
+
+.header img {
+    height: 60px;
+    position: absolute;
+    left: 10px;
+
+
+
+}
+
+.margin {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+}
+
+.margin img{
+
+    padding-left: 50px;
+}
+
+
+button {
+    margin-left: 40px;
+    margin-right: 20px;
+}
+
+.main_nav ul li {
+    font-size: 50px;
+}
+
+table {
+    font-family: Exo;
+    font-size: 26px;
+
+}
+
+table td {
+
+}
+
+div .table {
+    width: 50%;
+    margin-bottom: 0px;
+}
+
+.blurry-text {
+    color: transparent;
+    text-shadow: 0 0 40px rgba(0, 0, 0, 1);
+}
+
+.my-new-list, .my-new-list td, .my-new-list tr, .my-new-list th {
+    /*border: 1px solid #2a6496;*/
+
+}
+
+.address h3{
+    line-height: 40px;
+}
+.address {
+
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+
+.row{
+    margin-top: 20px;
+}
+
+#locationField, #controls {
+    position: relative;
+    width: 100%;
+}
+
+#autocomplete {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    padding-right: 0px;
+    padding-left: 0px;
+}
+
+.label {
+    text-align: right;
+    font-weight: bold;
+    width: 100px;
+    color: #303030;
+}
+
+
+.field {
+    width: 99%;
+}
+
+.slimField {
+    width: 80px;
+}
+
+.wideField {
+    width: 200px;
+}
+
+#locationField {
+    height: 20px;
+    margin-bottom: 2px;
+}

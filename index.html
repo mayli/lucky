@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+
+    <link href='http://fonts.googleapis.com/css?family=Exo' rel='stylesheet' type='text/css'>
+    <link href="src/css/docs.min.css" rel="stylesheet">
+    <link href="src/css/bootstrap.min.css" rel="stylesheet">
+    <link href="src/css/main.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&libraries=places"></script>
+
+
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script  type="text/javascript" src="src/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="src/js/main.js"></script>
+
+
+    <script>
+
+
+        $(document).ready(function () {
+            var path = "src/img/head/";
+            var type = ".jpg";
+            var picNum = Math.floor(Math.random() * 6) + 1;
+            $("#profile_pic").attr("src", path + picNum + type);
+        });
+
+
+    </script>
+
+    <script type="text/javascript" src="src/js/paper.js"></script>
+    <script type="text/paperscript" canvas="canvas">
+		// Code ported to Paper.js from http://the389.com/9/1/
+		// with permission.
+
+		var values = {
+			friction: 0.8,
+			timeStep: 0.01,
+			amount: 15,
+			mass: 2,
+			count: 0
+		};
+		values.invMass = 1 / values.mass;
+
+		var path, springs;
+		var size = view.size * [1.2, 1];
+
+		var Spring = function(a, b, strength, restLength) {
+			this.a = a;
+			this.b = b;
+			this.restLength = restLength || 80;
+			this.strength = strength ? strength : 0.55;
+			this.mamb = values.invMass * values.invMass;
+		};
+
+		Spring.prototype.update = function() {
+			var delta = this.b - this.a;
+			var dist = delta.length;
+			var normDistStrength = (dist - this.restLength) /
+					(dist * this.mamb) * this.strength;
+			delta.y *= normDistStrength * values.invMass * 0.2;
+			if (!this.a.fixed)
+				this.a.y += delta.y;
+			if (!this.b.fixed)
+				this.b.y -= delta.y;
+		};
+
+
+		function createPath(strength) {
+			var path = new Path({
+				fillColor: 'black'
+			});
+			springs = [];
+			for (var i = 0; i <= values.amount; i++) {
+				var segment = path.add(new Point(i / values.amount, 0.5) * size);
+				var point = segment.point;
+				if (i == 0 || i == values.amount)
+					point.y += size.height;
+				point.px = point.x;
+				point.py = point.y;
+				// The first two and last two points are fixed:
+				point.fixed = i < 2 || i > values.amount - 2;
+				if (i > 0) {
+					var spring = new Spring(segment.previous.point, point, strength);
+					springs.push(spring);
+				}
+			}
+			path.position.x -= size.width / 4;
+			return path;
+		}
+
+		function onResize() {
+			if (path)
+				path.remove();
+			size = view.bounds.size * [2, 1];
+			path = createPath(0.1);
+		}
+
+		function onMouseMove(event) {
+			var location = path.getNearestLocation(event.point);
+			var segment = location.segment;
+			var point = segment.point;
+
+			if (!point.fixed && location.distance < size.height / 4) {
+				var y = event.point.y;
+				point.y += (y - point.y) / 6;
+				if (segment.previous && !segment.previous.fixed) {
+					var previous = segment.previous.point;
+					previous.y += (y - previous.y) / 24;
+				}
+				if (segment.next && !segment.next.fixed) {
+					var next = segment.next.point;
+					next.y += (y - next.y) / 24;
+				}
+			}
+		}
+
+		function onFrame(event) {
+			updateWave(path);
+		}
+
+		function updateWave(path) {
+			var force = 1 - values.friction * values.timeStep * values.timeStep;
+			for (var i = 0, l = path.segments.length; i < l; i++) {
+				var point = path.segments[i].point;
+				var dy = (point.y - point.py) * force;
+				point.py = point.y;
+				point.y = Math.max(point.y + dy, 0);
+			}
+
+			for (var j = 0, l = springs.length; j < l; j++) {
+				springs[j].update();
+			}
+			path.smooth();
+		}
+
+		function onKeyDown(event) {
+			if (event.key == 'space') {
+				path.fullySelected = !path.fullySelected;
+				path.fillColor = path.fullySelected ? null : 'black';
+			}
+		}
+
+
+
+
+
+
+
+
+
+    </script>
+</head>
+<body onload="initialize()">
+
+<header class=" header ">
+    <img src="src/img/lucky.png"/>
+</header>
+
+
+<div id="profile" class="row ">
+
+    <div class=" col-md-3 col-md-offset-4 margin">
+        <img id="profile_pic" src="#"/>
+    </div>
+
+</div>
+
+<div id="search" class="row" style="position: relative">
+
+    <div class=" col-md-4 col-md-offset-4">
+
+            <div class="form-group">
+                <input id="keyword" class="form-control" type="text" placeholder=" Enter anything ">
+            </div>
+
+
+            <div id="locationField">
+                <input id="autocomplete" class="form-control" placeholder="    Enter your address"
+                       onFocus="geolocate()" type="text">
+            </div>
+
+
+
+
+    </div>
+
+
+    <div class="col-md-6 col-md-offset-5" style="margin-top: 40px; padding-left: 60px; position: relative">
+
+
+        <div class="col-md-4">
+            <a class="btn-lg btn-default btn-success" onclick="getResult()">I feel Lucky!</a>
+        </div>
+    </div>
+
+    <div class="col-md-12" style="height:50px">
+        <canvas id="canvas" resize hidpi="off"></canvas>
+    </div>
+
+</div>
+
+
+<div id="result" style="display: none">
+
+    <div class="row ">
+        <div class="col-md-12">
+            <div class="table col-md-6 col-md-offset-3"></div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-6 col-md-offset-3 ">
+                <div id="address" class="address bs-callout bs-callout-info ">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="col-md-4 col-md-offset-3" style="padding-left: 80px">
+                <a class="btn-lg btn-default btn-warning" onclick="getSearch()">I feel more <b>Lucky</b>!</a>
+            </div>
+            <div class="col-md-2">
+                <a class="btn-lg btn-default btn-success">Awesome!</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+</div>
+
+
+</body>
+</html>
