@@ -12,6 +12,12 @@ $(document).ready(function () {
 
 });
 
+function plzwaiton(){
+    $('#myModal').modal('show');
+}
+function plzwaitoff(){
+    $('#myModal').modal('hide');
+}
 
 function getSearch() {
 
@@ -20,7 +26,6 @@ function getSearch() {
     $("#profile").show();
     $(".table").empty();
     $(".address").empty();
-
 }
 
 function hasCookie(){
@@ -28,8 +33,6 @@ function hasCookie(){
 }
 
 function getResult() {
-
-
     //TODO
 
 if(!hasCookie()){
@@ -41,28 +44,28 @@ if(!hasCookie()){
     $("#profile").hide();
 
 
-
     var userData = {
-        keyword:   document.getElementsById("keyword"),
-        addr: $.cookie.get('address')+","+$.cookie.get('city'),
-        city: $.cookie.get('state'),
-        zip: $.cookie.get('zip')
-
+        keyword:   document.getElementById("keyword").textContent,
+        addr: $.cookie('address'),
+        city: $.cookie('city'),
+        zip: $.cookie('zip')
     }
+
+    plzwaiton();
 
     $.ajax({
         type: "POST",
-        url: "get_order",
+        url: "/gen_order",
         data: userData
     })
-        .done(function (msg) {
-            alert("Data Saved: " + msg);
+        .done(function (data) {
+            //alert("Data Saved: " + data);
 
                 var items = [];
                 var address = "";
                 var amount = data.amount;
 
-                address += data.restaurant.na + "<br>";
+                address += data.restaurant.na + "<i>($"+ data.restaurant.services.deliver.mino +" to delivery)</i>" + "<br>";
                 address += data.restaurant.addr + "<br>";
                 address += data.restaurant.cs_phone;
 
@@ -109,7 +112,7 @@ if(!hasCookie()){
                         $(this).css('text-shadow', color + " " + y + " " + x + " " + blur);
                     }
                 });
-
+            plzwaitoff();
             });
 
     /*    $.getJSON("data/item.json", function (data) {

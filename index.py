@@ -25,9 +25,9 @@ def flat_item(menulist):
             this_level.append(item)
     return this_level
 
-@route('/', method=['GET', 'POST'])
-def index():
-    return open('index.html').read()
+#@route('/', method=['GET', 'POST'])
+#def index():
+#    return open('index.html').read()
 
 @route('/gen_order', method=['GET', 'POST'])
 def gen_order():
@@ -37,6 +37,7 @@ def gen_order():
     addr = request.forms.get('addr', '21 college dr, stony brook')
     city = request.forms.get('city', 'newyork')
     azip = request.forms.get('zip', '11790')
+    print addr, '~', city,'~', azip
 
     # opt
     item_number = int(request.forms.get('item_number', 4))
@@ -134,5 +135,10 @@ def post_order():
 @route('/src/<path:path>')
 def callback(path):
     return bottle.static_file(path, root='/home/mayli/lucky/src/')
+
+@route('/', method=['GET', 'POST'])
+def index():
+    return open('index.html').read()
+
 
 run(host='0.0.0.0', port=8888, debug=True, reloader=True, autojson=True)
