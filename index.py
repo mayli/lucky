@@ -5,6 +5,8 @@ import random
 from pprint import pprint
 ORDIN_KEY = 'wv5pA16bxmYnIjGw06yvcV14fD6qYt5RxLZU28jkga4'
 
+app = bottle.Bottle()
+
 # return flaterned menu list, id stored in flat_id as ['l1_id','child_id', ...]
 def flat_item(menulist):
     this_level=[]
@@ -29,7 +31,7 @@ def flat_item(menulist):
 #def index():
 #    return open('index.html').read()
 
-@route('/gen_order', method=['GET', 'POST'])
+@app.route('/gen_order', method=['GET', 'POST'])
 def gen_order():
     ordrin_api = ordrin.APIs(ORDIN_KEY, ordrin.TEST)
 
@@ -85,7 +87,7 @@ def gen_order():
     return {'restaurant':rentry, 'menu':'menu', 'order':order, 'amount': '%0.2f'%amount, 'trays':'+'.join(trays)}
     #return ordrin.delivery_check('ASAP', )
 
-@route('/post_order', method=['GET', 'POST'])
+@app.route('/post_order', method=['GET', 'POST'])
 def post_order():
     ordrin_api = ordrin.APIs(ORDIN_KEY, ordrin.TEST)
     for field in [
@@ -136,10 +138,10 @@ def post_order():
 def callback(path):
     return bottle.static_file(path, root='/home/mayli/lucky/src/')
 
-@route('/', method=['GET', 'POST'])
-def index():
-    return open('index.html').read()
+#@route('/', method=['GET', 'POST'])
+#def index():
+#    return open('index.html').read()
 
-
-run(host='0.0.0.0', port=80, debug=True, reloader=True, server='paste')
+bottle.run(app=app, server='gae', debug=True)
+#run(host='0.0.0.0', port=80, debug=True, reloader=True, server='paste')
 #run(host='0.0.0.0', port=80, debug=True, reloader=True, autojson=True, server='paste')
